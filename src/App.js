@@ -3,16 +3,15 @@ import { baseRequest } from './services/request';
 import { Search } from './components/Search';
 import { Card } from './components/Card';
 import { Modal } from './components/Modal';
-import dotenv from 'dotenv';
 import './styles/main.scss'
+import { HOST } from './services/constants';
 
-dotenv.config()
 
 function App() {
-  
+
   const [ data, setData ] = useState([]);
   const [ modal, setModal ] = useState(false)
-  const [ propsData, setPropsData ] = useState({})
+  const [ modalData, setModalData ] = useState({})
 
   useEffect(() => {
     getData()
@@ -21,10 +20,10 @@ function App() {
   const getData = async (param) => {
     try {
         if (param) {
-          const res = await baseRequest(process.env.REACT_HOST, param)
+          const res = await baseRequest(HOST, param)
           setData(res);
         } else {
-          const res = await baseRequest(process.env.REACT_HOST)
+          const res = await baseRequest(HOST)
           setData(res);
         }
     } catch (error) {
@@ -41,7 +40,7 @@ function App() {
   }
 
   const openModal = (item) => {
-    setPropsData(item)
+    setModalData(item)
     setModal(true)
   }
 
@@ -52,7 +51,7 @@ function App() {
           {
             data.length < 1
             ?
-            <div className='empty_request'>Не удалсь получить данные</div>
+            <div className='empty_request'>Ошибка сервера или не удалось найти данные по вашему запросу.</div>
             :
             data.map((item, idx) => 
                 <Card
@@ -62,13 +61,7 @@ function App() {
                 ></Card>
             )
           }
-          {
-            modal && propsData
-            ?
-            <Modal propsData={propsData} setModal={setModal}></Modal> 
-            : 
-            null
-          }
+          {(modal && modalData) && <Modal modalData={modalData} setModal={setModal}></Modal>}
         </div>
     </div>
   );
