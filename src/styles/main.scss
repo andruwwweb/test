@@ -112,7 +112,7 @@
     cursor: pointer;
 }
 .search_wrapper {
-    margin: 32px 0 64px;
+    margin: 32px 0;
     position: relative;
 }
 .search {
@@ -132,4 +132,13 @@
     position: absolute;
     right: 16px;
     top: 10px;
+}
+.warning {
+    color: red;
+    font-size: 12px;
+    margin: 10px 0 0 10px;
+}
+.empty_request {
+    margin: 0 10px;
+    font-size: 18px;
 }
